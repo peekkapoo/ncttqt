@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đề cương ôn tập — Nghiên cứu thị trường quốc tế</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Sử dụng bộ font chuẩn phong cách Techno/Developer -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Bảng màu Dark Techno / Webflow Developer */
+  --bg-body: #09090b;       /* Đen sâu */
+  --bg-card: #121214;       /* Xám đen cho thẻ */
+  --bg-hover: #18181b;      
+  --bg-highlight: #1e1e24;  
+  
+  --text-main: #e4e4e7;     /* Trắng sáng */
+  --text-muted: #a1a1aa;    /* Xám thép */
+  --text-primary: #00e5ff;  /* Xanh Neon Cyan - Điểm nhấn techno */
+  
+  --border-light: #27272a;
+  --border-focus: #00e5ff;
+  
+  --exam-bg: transparent;
+  --exam-text: #ff3366;     /* Đỏ dạ quang cho tag Thi */
+  
+  /* Bắt buộc hình vuông (0px) theo yêu cầu */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  
+  /* Typography */
+  --font-main: 'Inter', sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+body { 
+  font-family: var(--font-main); 
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  
+  /* Nền họa tiết lưới kỹ thuật số (Grid Pattern) */
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.container { 
+  padding: 4rem 1.5rem; 
+  max-width: 860px; 
+  margin: 0 auto; 
+  position: relative;
+  z-index: 1;
+}
+
+/* Header Styles - Tech Terminal Vibe */
+.header { 
+  margin-bottom: 3.5rem; 
+  text-align: left;
+  background: rgba(18, 18, 20, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  border-top: 4px solid var(--text-primary); /* Vạch kẻ trên cùng */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.header h1 { 
+  font-family: var(--font-heading);
+  font-size: 26px; 
+  font-weight: 700; 
+  color: #ffffff; 
+  margin-bottom: 12px; 
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.header p { 
+  font-size: 15px; 
+  color: var(--text-muted); 
+  margin-bottom: 24px;
+}
+
+.progress { 
+  display: flex; 
+  gap: 12px; 
+  align-items: center; 
+  flex-wrap: wrap; 
+}
+
+/* Nút bấm (Buttons) vuông vức, viền sắc nét */
+.prog-pill { 
+  font-family: var(--font-mono);
+  font-size: 13px; 
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 10px 20px; 
+  border-radius: var(--radius-sm); 
+  background: transparent;
+  border: 1px solid var(--text-muted); 
+  color: var(--text-muted); 
+  cursor: pointer; 
+  transition: all 0.15s ease-out; /* Chuyển động nhanh, dứt khoát */
+}
+
+.prog-pill:hover { 
+  background: rgba(0, 229, 255, 0.05); 
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  /* Hiệu ứng đổ bóng vuông (Brutalist tech shadow) */
+  box-shadow: -3px 3px 0 rgba(0, 229, 255, 0.2);
+  transform: translate(2px, -2px);
+}
+
+.prog-pill:active {
+  transform: translate(0, 0);
+  box-shadow: none;
+}
+
+/* Chapter Card Styles - Hình vuông, đường viền nét */
+.chapter { 
+  margin-bottom: 1.5rem; 
+  background: var(--bg-card);
+  border: 1px solid var(--border-light); 
+  border-radius: var(--radius-lg); 
+  transition: all 0.2s ease-out;
+  position: relative; /* Bắt buộc để chứa viền sáng */
+}
+
+/* Hiệu ứng Vercel Spotlight Border */
+.chapter::before {
+  content: "";
+  position: absolute;
+  inset: -1px; /* Phủ tràn ra mép viền cũ */
+  padding: 1px; /* Độ dày của viền sáng */
+  border-radius: inherit;
+  /* Vùng sáng chạy theo tọa độ x, y của chuột */
+  background: radial-gradient(
+    800px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+    var(--text-primary),
+    transparent 40%
+  );
+  /* Kỹ thuật Mask đục thủng ruột thẻ, chỉ để lại border */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.15; /* Sáng mờ kể cả khi chưa hover (đúng chuẩn Vercel) */
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.chapter:hover {
+  border-color: transparent; /* Ẩn viền tĩnh đi để viền sáng thay thế */
+  box-shadow: -4px 4px 0 rgba(0, 229, 255, 0.15);
+  transform: translate(2px, -2px);
+}
+
+.chapter:hover::before {
+  opacity: 1; /* Sáng rực rỡ khi di chuột vào chính nó */
+}
+
+.chapter-header { 
+  padding: 20px 24px; 
+  display: flex; 
+  align-items: center; 
+  gap: 16px; 
+  cursor: pointer; 
+  user-select: none; 
+  background: var(--bg-card); 
+  transition: background 0.3s ease;
+}
+
+.chapter-header:hover { 
+  background: var(--bg-hover); 
+}
+
+.ch-badge { 
+  font-family: var(--font-mono);
+  font-size: 12px; 
+  font-weight: 700; 
+  padding: 6px 12px; 
+  border-radius: var(--radius-sm); 
+  white-space: nowrap; 
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  /* Đổ bóng khối cho badge để hòa hợp với tông màu data */
+  box-shadow: -2px 2px 0 rgba(255, 255, 255, 0.15);
+}
+
+.ch-title { 
+  font-family: var(--font-heading);
+  font-size: 18px; 
+  font-weight: 700; 
+  color: #ffffff; 
+  flex: 1; 
+  letter-spacing: 0.01em;
+}
+
+.ch-arrow { 
+  font-size: 14px; 
+  color: var(--text-muted); 
+  transition: transform 0.2s ease-out; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid var(--border-light);
+  border-radius: 0;
+}
+
+.ch-arrow.open { 
+  transform: rotate(90deg); 
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+/* Chapter Body & Keys */
+.chapter-body { 
+  display: none; 
+  padding: 0 24px 24px 24px; 
+  background: var(--bg-card); 
+  border-top: 1px solid var(--border-light);
+}
+
+.chapter-body.open { 
+  display: block; 
+}
+
+.section-label { 
+  font-family: var(--font-mono);
+  font-size: 12px; 
+  font-weight: 700; 
+  text-transform: uppercase; 
+  letter-spacing: 0.15em; 
+  color: var(--text-primary); 
+  margin-bottom: 14px; 
+  margin-top: 28px; 
+  display: flex;
+  align-items: center;
+}
+
+.section-label::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  /* Đường đứt nét kỹ thuật số */
+  background: repeating-linear-gradient(90deg, var(--border-light), var(--border-light) 4px, transparent 4px, transparent 8px);
+  margin-left: 16px;
+}
+
+.section-label:first-child { 
+  margin-top: 24px; 
+}
+
+.key-content { 
+  background: var(--bg-highlight); 
+  border-left: 3px solid var(--text-primary); /* Sọc dọc techno */
+  border-radius: var(--radius-sm); 
+  padding: 18px 24px; 
+  margin-bottom: 24px; 
+  font-size: 15px; 
+  color: var(--text-main); 
+}
+
+.key-content ul { 
+  padding-left: 20px; 
+}
+
+.key-content li { 
+  margin-bottom: 8px; 
+}
+.key-content li:last-child { margin-bottom: 0; }
+
+/* Questions Styles */
+.q-item { 
+  border: 1px solid var(--border-light); 
+  border-radius: var(--radius-sm); 
+  margin-bottom: 12px; 
+  background: transparent;
+  transition: all 0.2s ease-out;
+  position: relative;
+}
+
+/* Vercel Spotlight Border Effect cho các item câu hỏi */
+.q-item::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+    var(--text-primary),
+    transparent 40%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0; /* Mặc định ẩn để không bị quá chói, chỉ bật khi hover */
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.q-item:hover {
+  border-color: transparent;
+  transform: translateX(4px);
+  /* Thanh trượt dạ quang bên trái khi hover */
+  box-shadow: -4px 0 0 var(--text-primary);
+}
+
+.q-item:hover::before {
+  opacity: 1;
+}
+
+.q-header { 
+  padding: 16px 20px; 
+  display: flex; 
+  gap: 14px; 
+  cursor: pointer; 
+  background: rgba(255, 255, 255, 0.01); 
+  align-items: flex-start;
+}
+
+.q-num { 
+  font-family: var(--font-mono);
+  font-size: 14px; 
+  font-weight: 700; 
+  color: var(--text-primary); 
+  min-width: 24px; 
+  margin-top: 2px;
+}
+
+.q-text { 
+  font-size: 15px; 
+  font-weight: 500;
+  color: #ffffff; 
+  flex: 1; 
+  line-height: 1.6;
+}
+
+.q-toggle { 
+  font-family: var(--font-mono);
+  font-size: 18px; 
+  font-weight: 400;
+  color: var(--text-muted); 
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.q-answer { 
+  display: none; 
+  padding: 20px 20px 24px 58px; 
+  border-top: 1px solid var(--border-light); 
+  background: rgba(0, 0, 0, 0.2); 
+  font-size: 14.5px; 
+  color: #d4d4d8; 
+}
+
+.q-answer.open { 
+  display: block; 
+}
+
+.q-answer strong { 
+  color: #ffffff; 
+  font-weight: 600; 
+}
+
+.q-answer ul, .q-answer ol { 
+  padding-left: 22px; 
+  margin: 10px 0 14px 0; 
+}
+
+.q-answer li { 
+  margin-bottom: 8px; 
+}
+
+.q-answer table td {
+  padding: 12px;
+  border-color: var(--border-light) !important; /* Đè màu viền bảng trong Dark Mode */
+  color: #e4e4e7;
+}
+
+/* Tags thi cử */
+.exam-tag { 
+  display: inline-flex; 
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px; 
+  font-weight: 700; 
+  padding: 3px 8px; 
+  border-radius: var(--radius-sm); 
+  margin-left: 10px; 
+  background: var(--exam-bg); 
+  color: var(--exam-text);
+  border: 1px solid var(--exam-text);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  vertical-align: middle;
+  /* Đổ bóng offset vuông vắn */
+  box-shadow: -2px 2px 0 var(--exam-text);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .container { padding: 1.5rem 1rem; }
+  .header { padding: 2rem 1.5rem; margin-bottom: 2rem; }
+  .chapter-header { padding: 16px; gap: 12px; }
+  .q-answer { padding-left: 20px; }
+  .q-item:hover { transform: translateX(2px); box-shadow: -2px 0 0 var(--text-primary); }
+  .chapter:hover { transform: translate(1px, -1px); }
+}
+
+/* Scroll Reveal Animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header reveal">
+  <h1>Đề cương ôn tập — NCTTQT</h1>
+  <p>Bấm vào câu hỏi để xem gợi ý trả lời. Câu có nhãn <span class="exam-tag" style="margin:0; box-shadow:none;">Thi</span> xuất hiện trong đề cũ.</p>
+  <div class="progress">
+    <button class="prog-pill" onclick="toggleAll(true)">Mở tất cả</button>
+    <button class="prog-pill" onclick="toggleAll(false)">Đóng tất cả</button>
+  </div>
+</div>
+
+<div id="chapters"></div>
+</div>
+
+<script>
+const data = [
+{
+  ch: 1, color: "#e0f2fe", textColor: "#0369a1",
+  title: "Khái niệm – Vai trò – Tiến trình NCTTQT",
+  keys: ["Khái niệm nghiên cứu thị trường quốc tế", "Vai trò & giới hạn của NCTTQT", "Đối tượng nghiên cứu", "7 bước quy trình NCTTQT"],
+  qs: [
+    {
+      q: "Nghiên cứu thị trường quốc tế là gì?",
+      a: `<strong>Khái niệm:</strong> NCTTQT là việc thiết kế có hệ thống nhằm thu thập, xử lý, phân tích và diễn giải thông tin liên quan đến thị trường nước ngoài để phục vụ ra quyết định kinh doanh quốc tế.<br><br>
+      Bao gồm việc nghiên cứu: người tiêu dùng, động cơ mua hàng, nhu cầu/thị phần, cạnh tranh, sản phẩm, phân phối, giá cả, chiêu thị.`
+    },
+    {
+      q: "Vai trò của nghiên cứu thị trường?",
+      a: `<strong>Đối với hoạt động kinh doanh:</strong><ul>
+      <li>Cung cấp thông tin để ra quyết định kinh doanh đúng đắn</li>
+      <li>Giảm thiểu rủi ro khi thâm nhập thị trường mới</li>
+      <li>Phát hiện cơ hội thị trường, hiểu nhu cầu khách hàng</li>
+      <li>Hỗ trợ lập kế hoạch Marketing quốc tế</li></ul>
+      <strong>Đối với nhà lãnh đạo:</strong><ul>
+      <li>Cơ sở để ra quyết định thay vì dựa vào trực giác</li>
+      <li>Giúp kiểm soát hoạt động kinh doanh</li></ul>`
+    },
+    {
+      q: "Giới hạn của nghiên cứu thị trường là gì?",
+      a: `<ul>
+      <li>Tốn kém chi phí và thời gian</li>
+      <li>Không thể dự đoán chính xác hành vi tương lai</li>
+      <li>Độ chính xác phụ thuộc vào chất lượng dữ liệu thu thập</li>
+      <li>Khó đảm bảo tính đại diện của mẫu nghiên cứu</li>
+      <li>Kết quả có thể bị ảnh hưởng bởi sai lệch từ người phỏng vấn hoặc người được phỏng vấn</li></ul>`
+    },
+    {
+      q: "Mô tả sơ lược các giai đoạn của tiến trình nghiên cứu thị trường?",
+      a: `<strong>7 bước quy trình:</strong><ol>
+      <li><strong>Xác định vấn đề & mục tiêu nghiên cứu</strong> — bước quan trọng nhất</li>
+      <li><strong>Lập kế hoạch nghiên cứu</strong> — nguồn dữ liệu, phương pháp, kế hoạch chọn mẫu</li>
+      <li><strong>Xác định thông tin cần thiết</strong> — cụ thể hóa nhu cầu dữ liệu</li>
+      <li><strong>Lựa chọn nguồn dữ liệu</strong> — sơ cấp hoặc thứ cấp</li>
+      <li><strong>Thu thập dữ liệu</strong> — giai đoạn tốn nhiều thời gian & chi phí nhất</li>
+      <li><strong>Xử lý & phân tích thông tin</strong> — dùng phần mềm thống kê</li>
+      <li><strong>Trình bày kết quả</strong> — báo cáo rõ ràng, mạch lạc</li></ol>`
+    },
+    {
+      q: "Tầm quan trọng của từng giai đoạn nghiên cứu?",
+      exam: true,
+      a: `<strong>Bước 1 — Xác định vấn đề & mục tiêu:</strong> Quan trọng nhất. Nếu sai → toàn bộ nghiên cứu lạc hướng, tốn kém vô ích, quyết định không hiệu quả.<br><br>
+      <strong>Bước 2 — Lập kế hoạch:</strong> Giúp dự kiến trước, tổ chức khoa học, là cơ sở kiểm chứng dữ liệu.<br><br>
+      <strong>Bước 5 — Thu thập:</strong> Dễ mắc sai lầm nhất, tốn nhiều nguồn lực nhất.<br><br>
+      <strong>Bước 6 — Phân tích:</strong> Rút ra kết luận từ dữ liệu thô.<br><br>
+      <strong>Bước 7 — Báo cáo:</strong> Truyền đạt kết quả đến người ra quyết định.`
+    }
+  ]
+},
+{
+  ch: 2, color: "#d1fae5", textColor: "#047857",
+  title: "Các mô hình nghiên cứu",
+  keys: ["Khái niệm & ý nghĩa mô hình nghiên cứu", "Mối quan hệ nhân quả", "Mô hình mô tả (descriptive)", "Mô hình thử nghiệm (experimental)", "Mô hình bán thử nghiệm"],
+  qs: [
+    {
+      q: "Thế nào là mô hình nghiên cứu? Ý nghĩa?",
+      a: `<strong>Khái niệm:</strong> Mô hình nghiên cứu là sự phác họa về hình dạng của cuộc nghiên cứu — nói lên kiểu nghiên cứu, cách tiếp cận vấn đề.<br><br>
+      <strong>Ý nghĩa:</strong><ul>
+      <li>Cơ sở xây dựng kế hoạch/đề cương nghiên cứu</li>
+      <li>Cơ sở xác định mục tiêu và nguồn dữ liệu phù hợp</li></ul>`
+    },
+    {
+      q: "Khi nào chọn nghiên cứu thăm dò (exploratory)? Lấy ví dụ?",
+      a: `<strong>Sử dụng khi:</strong> Vấn đề nghiên cứu chưa rõ ràng, cần thu thập dữ liệu ban đầu để làm sáng tỏ bản chất và gợi ý giả thuyết mới.<br><br>
+      <strong>Ví dụ:</strong> Doanh nghiệp muốn tìm hiểu tại sao doanh số giảm ở thị trường Châu Âu → thực hiện nghiên cứu thăm dò qua phỏng vấn chuyên sâu để xác định nguyên nhân tiềm năng.`
+    },
+    {
+      q: "Sự khác nhau giữa nghiên cứu mô tả và nghiên cứu nhân quả?",
+      exam: true,
+      a: `<div style="overflow-x:auto;">
+      <table style="width:100%;font-size:14px;border-collapse:collapse;min-width:500px;">
+      <tr style="background:var(--bg-highlight)"><td style="padding:10px;border:1px solid var(--border-light);font-weight:600;color:#fff">Tiêu chí</td><td style="padding:10px;border:1px solid var(--border-light);font-weight:600;color:#fff">Mô tả</td><td style="padding:10px;border:1px solid var(--border-light);font-weight:600;color:#fff">Nhân quả</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border-light);font-weight:500;">Mục tiêu</td><td style="padding:10px;border:1px solid var(--border-light);">Xác định độ lớn của chỉ tiêu (ai, cái gì, bao nhiêu)</td><td style="padding:10px;border:1px solid var(--border-light);">Kiểm tra mối quan hệ nguyên nhân-kết quả</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border-light);font-weight:500;">Phương pháp</td><td style="padding:10px;border:1px solid var(--border-light);">Điều tra, khảo sát, quan sát</td><td style="padding:10px;border:1px solid var(--border-light);">Thực nghiệm (experiment)</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border-light);font-weight:500;">Dữ liệu</td><td style="padding:10px;border:1px solid var(--border-light);">Sơ cấp & thứ cấp</td><td style="padding:10px;border:1px solid var(--border-light);">Chủ yếu sơ cấp, kiểm soát biến</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border-light);font-weight:500;">Ví dụ</td><td style="padding:10px;border:1px solid var(--border-light);">Tỷ lệ % KH hài lòng với sản phẩm</td><td style="padding:10px;border:1px solid var(--border-light);">Quảng cáo A có làm tăng doanh số không?</td></tr>
+      </table></div>`
+    },
+    {
+      q: "Ưu, nhược điểm của các mô hình thử nghiệm?",
+      a: `<strong>Ưu điểm:</strong><ul>
+      <li>Kiểm soát được biến số → kết quả chính xác, đáng tin cậy cao</li>
+      <li>Cho phép xác định quan hệ nhân quả rõ ràng</li>
+      <li>Loại bỏ được các yếu tố nhiễu</li></ul>
+      <strong>Nhược điểm:</strong><ul>
+      <li>Chi phí cao, tốn thời gian</li>
+      <li>Khó thực hiện trong điều kiện thực tế (môi trường không kiểm soát được hoàn toàn)</li>
+      <li>Hiệu ứng Hawthorne: đối tượng biết mình đang bị thử nghiệm → thay đổi hành vi</li>
+      <li>Khó khái quát hóa kết quả ra ngoài phạm vi thử nghiệm</li></ul>`
+    }
+  ]
+},
+{
+  ch: 3, color: "#fef3c7", textColor: "#b45309",
+  title: "Dữ liệu – Các loại thang đo",
+  keys: ["Khái niệm & phân loại dữ liệu", "Xác định nhu cầu dữ liệu", "4 loại thang đo lường", "Cơ sở lựa chọn thang đo"],
+  qs: [
+    {
+      q: "Các tiêu thức phân loại dữ liệu?",
+      a: `<ul>
+      <li><strong>Theo đặc tính:</strong> Dữ liệu định tính (chất lượng, màu sắc...) & định lượng (số liệu đo đếm được)</li>
+      <li><strong>Theo bản chất:</strong> Dữ liệu sơ cấp (thu thập lần đầu) & thứ cấp (đã có sẵn)</li>
+      <li><strong>Theo chức năng:</strong> Dữ liệu mô tả & dữ liệu phân tích</li>
+      <li><strong>Theo nguồn:</strong> Nội bộ doanh nghiệp & bên ngoài doanh nghiệp</li></ul>`
+    },
+    {
+      q: "Các loại thang đo lường trong NCTTQT?",
+      exam: true,
+      a: `<strong>1. Thang biểu danh (Nominal):</strong> Phân loại theo tên gọi, không có thứ tự. VD: giới tính, quốc tịch.<br><br>
+      <strong>2. Thang thứ tự (Ordinal):</strong> Phân loại + có thứ tự, nhưng khoảng cách không đều. VD: xếp hạng 1st/2nd/3rd.<br><br>
+      <strong>3. Thang khoảng cách (Interval):</strong> Có thứ tự + khoảng cách đều, nhưng không có điểm 0 tuyệt đối. VD: thang Likert 1–5, nhiệt độ °C.<br><br>
+      <strong>4. Thang tỷ lệ (Ratio):</strong> Đầy đủ nhất — có thứ tự, khoảng cách đều và điểm 0 tuyệt đối. VD: thu nhập, doanh số, tuổi tác.`
+    },
+    {
+      q: "Tại sao đo lường dữ liệu quan trọng trong nghiên cứu?",
+      exam: true,
+      a: `<strong>Lý do 1:</strong> Đo lường giúp phân biệt các sự vật hiện tượng, đảm bảo dữ liệu thu thập chính xác và đáng tin cậy, cung cấp cơ sở cho thống kê và phân tích để đánh giá, so sánh dữ liệu. Từ đó nhà nghiên cứu nắm bắt được đặc trưng, xu hướng và rút ra kết luận hợp lý.<br><br>
+      <strong>Lý do 2:</strong> Đo lường giúp giám sát quá trình thu thập dữ liệu, đảm bảo dữ liệu đầy đủ và chính xác. Nếu không có đo lường, kết quả nghiên cứu dễ bị ảnh hưởng bởi sai sót, trở nên không đáng tin cậy.`
+    },
+    {
+      q: "Tiêu chuẩn lựa chọn thang đo?",
+      a: `<ul>
+      <li><strong>Độ tin cậy (Reliability):</strong> Cho ra kết quả nhất quán khi đo lặp lại nhiều lần</li>
+      <li><strong>Giá trị (Validity):</strong> Đo đúng cái cần đo (nội dung, cấu trúc, tiêu chuẩn)</li>
+      <li><strong>Độ nhạy:</strong> Phân biệt được sự khác nhau nhỏ giữa các đối tượng</li>
+      <li>Phù hợp với mục tiêu nghiên cứu và khả năng xử lý thống kê</li></ul>`
+    }
+  ]
+},
+{
+  ch: 4, color: "#e0e7ff", textColor: "#4338ca",
+  title: "Phương pháp thu thập số liệu",
+  keys: ["Dữ liệu thứ cấp: khái niệm, nguồn, tiêu chuẩn đánh giá", "Dữ liệu sơ cấp: các phương pháp thu thập", "Phỏng vấn: cá nhân, điện thoại, nhóm, bảng câu hỏi", "Quan sát"],
+  qs: [
+    {
+      q: "Ưu điểm và hạn chế của từng phương pháp phỏng vấn điều tra?",
+      exam: true,
+      a: `<strong>Phỏng vấn cá nhân trực tiếp:</strong><br>
+      Ưu: tỷ lệ trả lời cao, linh hoạt, quan sát được phản ứng phi ngôn ngữ.<br>
+      Nhược: chi phí cao, tốn thời gian, có tác động tiêu cực từ phỏng vấn viên, thông tin riêng tư khó thu thập, người trả lời mất tập trung bởi môi trường xung quanh.<br><br>
+      <strong>Phỏng vấn qua điện thoại:</strong><br>
+      Ưu: nhanh, chi phí thấp hơn, kiểm soát được phỏng vấn viên.<br>
+      Nhược: thời gian phỏng vấn ngắn, không quan sát được, từ chối cao.<br><br>
+      <strong>Phỏng vấn qua bảng câu hỏi gửi thư/email:</strong><br>
+      Ưu: chi phí thấp, không bị ảnh hưởng bởi phỏng vấn viên, tiếp cận rộng.<br>
+      Nhược: tỷ lệ hồi đáp thấp, không kiểm soát được người trả lời.<br><br>
+      <strong>Phỏng vấn nhóm (Focus group):</strong><br>
+      Ưu: thu thập nhiều ý kiến, kích thích sáng tạo, nhanh.<br>
+      Nhược: ý kiến số đông lấn át thiểu số, tốn kém khi thuê người điều phối.`
+    },
+    {
+      q: "Khi nào phỏng vấn chuyên sâu thích hợp hơn phỏng vấn nhóm cố định?",
+      a: `Phỏng vấn chuyên sâu (in-depth interview) thích hợp hơn khi:<ul>
+      <li>Chủ đề nhạy cảm, riêng tư (tài chính, sức khỏe...)</li>
+      <li>Cần hiểu sâu động cơ, thái độ cá nhân</li>
+      <li>Đối tượng là chuyên gia, khó tập hợp nhóm</li>
+      <li>Không muốn bị ảnh hưởng bởi ý kiến người khác trong nhóm</li></ul>`
+    },
+    {
+      q: "Trong trường hợp nào sử dụng phương pháp quan sát là thích hợp?",
+      a: `Quan sát thích hợp khi:<ul>
+      <li>Cần dữ liệu về hành vi thực tế (không phải ý kiến)</li>
+      <li>Đối tượng không thể/không muốn tự báo cáo hành vi</li>
+      <li>Cần kiểm tra tính trung thực của dữ liệu phỏng vấn</li>
+      <li>Nghiên cứu hành vi mua hàng tại điểm bán</li></ul>`
+    },
+    {
+      q: "Vai trò quan trọng của việc sử dụng dữ liệu thứ cấp?",
+      a: `<ul>
+      <li>Rẻ, nhanh, dễ thu thập so với dữ liệu sơ cấp</li>
+      <li>Thường chiếm ~80% nhu cầu dữ liệu cho một cuộc nghiên cứu</li>
+      <li>Cung cấp nền tảng để xác định nhu cầu dữ liệu sơ cấp còn thiếu</li>
+      <li>Hữu ích cho việc hiểu bối cảnh thị trường trước khi nghiên cứu sâu</li></ul>`
+    }
+  ]
+},
+{
+  ch: 5, color: "#dcfce7", textColor: "#166534",
+  title: "Tính toán – Phân phối mẫu",
+  keys: ["Lý do phải xác định mẫu", "Quy trình lấy mẫu", "Phương pháp lấy mẫu phi xác suất", "Phương pháp lấy mẫu xác suất", "Tính toán kích thước mẫu"],
+  qs: [
+    {
+      q: "Tại sao phải xác định mẫu trong nghiên cứu thị trường?",
+      a: `<strong>4 lý do chính:</strong><ol>
+      <li><strong>Thời gian:</strong> Điều tra toàn bộ tốn quá nhiều thời gian, trong khi quyết định cần thông tin nhanh</li>
+      <li><strong>Chi phí:</strong> Nghiên cứu mẫu tiết kiệm chi phí đáng kể</li>
+      <li><strong>Ý nghĩa:</strong> Nhiều trường hợp điều tra toàn bộ là không cần thiết (sai số nhỏ chấp nhận được)</li>
+      <li><strong>Độ tin cậy:</strong> Mẫu nhỏ được kiểm soát tốt hơn → ít sai sót hơn điều tra đại trà</li></ol>`
+    },
+    {
+      q: "Phương pháp lấy mẫu xác suất và phi xác suất? Có những loại nào?",
+      a: `<strong>Lấy mẫu xác suất</strong> (mỗi phần tử có xác suất được chọn đã biết):<ul>
+      <li>Ngẫu nhiên đơn giản</li>
+      <li>Ngẫu nhiên hệ thống</li>
+      <li>Phân tầng (stratified)</li>
+      <li>Phân cụm (cluster)</li></ul>
+      <strong>Lấy mẫu phi xác suất</strong> (không dựa vào xác suất):<ul>
+      <li>Thuận tiện (convenience)</li>
+      <li>Phán đoán (judgment)</li>
+      <li>Định mức (quota)</li>
+      <li>Quả cầu tuyết (snowball)</li></ul>`
+    }
+  ]
+},
+{
+  ch: 6, color: "#fce7f3", textColor: "#9d174d",
+  title: "Thiết kế bảng câu hỏi",
+  keys: ["Nhiệm vụ của bản câu hỏi", "Quy trình thiết kế", "Cấu trúc bản câu hỏi", "Dạng câu hỏi", "Từ ngữ trong câu hỏi"],
+  qs: [
+    {
+      q: "Vai trò và nhiệm vụ của bản câu hỏi?",
+      a: `<strong>Vai trò:</strong> Là công cụ chính để thu thập dữ liệu sơ cấp trong nghiên cứu định lượng.<br><br>
+      <strong>Nhiệm vụ:</strong> Đo lường — cụ thể là đo lường:<ul>
+      <li>Các hành vi đã qua (đã mua gì, đã làm gì)</li>
+      <li>Các thái độ (ý kiến, đánh giá, cảm xúc)</li>
+      <li>Các đặc điểm của người trả lời (nhân khẩu học)</li></ul>`
+    },
+    {
+      q: "Quy trình thiết kế bản câu hỏi?",
+      a: `<ol>
+      <li>Xác định thông tin cần thu thập (dựa vào mục tiêu nghiên cứu)</li>
+      <li>Xác định phương pháp phỏng vấn</li>
+      <li>Xác định nội dung từng câu hỏi</li>
+      <li>Xác định dạng câu trả lời (mở, đóng, thang đo)</li>
+      <li>Xác định từ ngữ cho câu hỏi</li>
+      <li>Xác định trình tự câu hỏi</li>
+      <li>Kiểm tra (pre-test) bảng câu hỏi</li>
+      <li>Hoàn chỉnh bảng câu hỏi chính thức</li></ol>`
+    },
+    {
+      q: "Cấu trúc và trình bày một bản câu hỏi?",
+      exam: true,
+      a: `<strong>Cấu trúc gồm các phần:</strong><ol>
+      <li><strong>Phần mở đầu/giới thiệu:</strong> Mục đích cuộc nghiên cứu, cam kết bảo mật thông tin</li>
+      <li><strong>Câu hỏi lọc/sàng lọc:</strong> Xác định đối tượng phù hợp để phỏng vấn</li>
+      <li><strong>Câu hỏi chính:</strong> Nội dung trọng tâm — từ câu hỏi dễ → khó, tổng quát → cụ thể</li>
+      <li><strong>Câu hỏi nhân khẩu học:</strong> Tuổi, giới tính, thu nhập, nghề nghiệp (đặt cuối)</li></ol>
+      <strong>Nguyên tắc trình bày:</strong> Rõ ràng, dễ hiểu, logic, không gây hiểu nhầm, ngắn gọn.`
+    }
+  ]
+},
+{
+  ch: 7, color: "#f3f4f6", textColor: "#374151",
+  title: "Xử lý – Diễn giải dữ liệu",
+  keys: ["Quy trình xử lý dữ liệu", "Phê chuẩn dữ liệu", "Mã hóa dữ liệu", "Hiệu chỉnh dữ liệu", "Các phương pháp xử lý & phân tích dữ liệu"],
+  qs: [
+    {
+      q: "Quy trình các bước xử lý dữ liệu?",
+      a: `<ol>
+      <li><strong>Phê chuẩn dữ liệu:</strong> Xem xét dữ liệu có giá trị cho nghiên cứu không</li>
+      <li><strong>Hiệu chỉnh dữ liệu:</strong> Sửa các lỗi, điền vào chỗ trống, loại bỏ dữ liệu không hợp lệ</li>
+      <li><strong>Mã hóa dữ liệu:</strong> Chuyển dữ liệu thành dạng số để nhập vào phần mềm</li>
+      <li><strong>Nhập dữ liệu vào phần mềm thống kê</strong> (SPSS, Excel...)</li>
+      <li><strong>Phân tích dữ liệu:</strong> Thống kê mô tả, kiểm định giả thuyết</li>
+      <li><strong>Diễn giải kết quả:</strong> Rút ra kết luận, đề xuất</li></ol>`
+    },
+    {
+      q: "Các phương pháp xử lý dữ liệu?",
+      a: `<ul>
+      <li><strong>Thống kê mô tả:</strong> Tần số, tỷ lệ %, trung bình, độ lệch chuẩn</li>
+      <li><strong>Kiểm định giả thuyết:</strong> T-test, Chi-square, ANOVA</li>
+      <li><strong>Phân tích tương quan:</strong> Mức độ liên hệ giữa hai biến</li>
+      <li><strong>Phân tích hồi quy:</strong> Dự báo và giải thích mối quan hệ nhân quả</li>
+      <li><strong>Phân tích nhân tố, phân tích cụm</strong> cho nghiên cứu phức tạp</li></ul>`
+    }
+  ]
+},
+{
+  ch: 8, color: "#ffedd5", textColor: "#c2410c",
+  title: "Báo cáo – Trình bày kết quả nghiên cứu",
+  keys: ["Vai trò & chức năng của bản báo cáo", "Nội dung bản báo cáo", "Hình thức bản báo cáo", "Nguyên tắc trình bày số liệu"],
+  qs: [
+    {
+      q: "Vai trò và chức năng của bản báo cáo kết quả nghiên cứu?",
+      exam: true,
+      a: `<strong>Vai trò:</strong><ul>
+      <li>Là tư liệu ghi chép có hệ thống toàn bộ nội dung nghiên cứu</li>
+      <li>Thuyết phục người sử dụng thông tin ứng dụng kết quả</li></ul>
+      <strong>3 chức năng chính:</strong><ol>
+      <li><strong>Lưu giữ thông tin:</strong> Toàn bộ thông tin chủ yếu thu thập được được trình bày để dễ tra cứu, không cần xem lại toàn bộ dữ liệu thô</li>
+      <li><strong>Phản ánh kết quả & chất lượng của cuộc nghiên cứu:</strong> Báo cáo thể hiện mức độ đạt được mục tiêu và chất lượng quá trình nghiên cứu</li>
+      <li><strong>Đề xuất phương hướng:</strong> Cung cấp khuyến nghị, gợi ý hướng giải quyết vấn đề cho nhà quản lý ra quyết định</li></ol>`
+    },
+    {
+      q: "Nội dung của một bản báo cáo?",
+      a: `<ol>
+      <li>Trang bìa & mục lục</li>
+      <li>Tóm tắt điều hành (executive summary)</li>
+      <li>Giới thiệu: bối cảnh, vấn đề, mục tiêu nghiên cứu</li>
+      <li>Phương pháp nghiên cứu</li>
+      <li>Kết quả nghiên cứu (số liệu, bảng biểu, đồ thị)</li>
+      <li>Kết luận và khuyến nghị</li>
+      <li>Phụ lục (bảng câu hỏi, dữ liệu thô...)</li></ol>`
+    },
+    {
+      q: "Hình thức của một bản báo cáo?",
+      a: `<ul>
+      <li><strong>Báo cáo viết:</strong> Văn bản đầy đủ, có cấu trúc, dùng bảng biểu và đồ thị minh họa</li>
+      <li><strong>Báo cáo miệng (thuyết trình):</strong> Trình bày trực tiếp trước người sử dụng</li>
+      <li><strong>Báo cáo kết hợp:</strong> Vừa viết vừa thuyết trình — phổ biến nhất trong thực tế</li></ul>
+      <strong>Yêu cầu:</strong> Ngắn gọn, rõ ràng, khách quan, có bằng chứng, không suy diễn quá mức.`
+    }
+  ]
+}
+];
+
+function toggleAll(open) {
+  document.querySelectorAll('.chapter-body').forEach(b => {
+    b.classList.toggle('open', open);
+  });
+  document.querySelectorAll('.ch-arrow').forEach(a => {
+    a.classList.toggle('open', open);
+  });
+}
+
+function render() {
+  const container = document.getElementById('chapters');
+  data.forEach((chap, ci) => {
+    const div = document.createElement('div');
+    div.className = 'chapter reveal';
+
+    const header = document.createElement('div');
+    header.className = 'chapter-header';
+    // Đã thay đổi icon mũi tên thành dạng hình vuông (square stroke) cho phù hợp style Techno
+    header.innerHTML = `
+      <span class="ch-badge" style="background:${chap.color};color:${chap.textColor}">Chương ${chap.ch}</span>
+      <span class="ch-title">${chap.title}</span>
+      <span class="ch-arrow" id="arr-${ci}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M9 18l6-6-6-6"/></svg>
+      </span>
+    `;
+    header.onclick = () => {
+      const body = document.getElementById('body-' + ci);
+      body.classList.toggle('open');
+      document.getElementById('arr-' + ci).classList.toggle('open');
+    };
+
+    const body = document.createElement('div');
+    body.className = 'chapter-body';
+    body.id = 'body-' + ci;
+
+    let html = `<div class="section-label">Nội dung cần nắm</div><div class="key-content"><ul>`;
+    chap.keys.forEach(k => { html += `<li>${k}</li>`; });
+    html += `</ul></div><div class="section-label">Câu hỏi ôn tập</div>`;
+
+    chap.qs.forEach((item, qi) => {
+      const examTag = item.exam ? `<span class="exam-tag">Thi</span>` : '';
+      html += `<div class="q-item">
+        <div class="q-header" onclick="toggleQ('q-${ci}-${qi}')">
+          <span class="q-num">[${qi+1}]</span>
+          <span class="q-text">${item.q}${examTag}</span>
+          <span class="q-toggle" id="qt-${ci}-${qi}">+</span>
+        </div>
+        <div class="q-answer" id="q-${ci}-${qi}">${item.a}</div>
+      </div>`;
+    });
+
+    body.innerHTML = html;
+    div.appendChild(header);
+    div.appendChild(body);
+    container.appendChild(div);
+  });
+}
+
+function toggleQ(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+  const parts = id.split('-');
+  const toggle = document.getElementById('qt-' + parts[1] + '-' + parts[2]);
+  if (toggle) toggle.textContent = el.classList.contains('open') ? '−' : '+';
+}
+
+render();
+
+// Scroll Reveal Observer Setup
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Bỏ theo dõi sau khi đã hiện để hiệu ứng chỉ chạy 1 lần
+      observer.unobserve(entry.target); 
+    }
+  });
+}, {
+  threshold: 0.1, // Kích hoạt khi 10% phần tử vào khung hình
+  rootMargin: "0px 0px -30px 0px" // Kích hoạt sớm/muộn một chút so với viền dưới màn hình
+});
+
+// Thêm delay tuần tự (stagger effect) cho các phần tử xuất hiện ngay từ đầu
+document.querySelectorAll('.reveal').forEach((el, index) => {
+  if (index < 6) { // Chỉ áp dụng độ trễ cho vài thẻ đầu tiên
+    el.style.transitionDelay = `${index * 0.08}s`;
+  }
+  observer.observe(el);
+});
+
+// Spotlight Effect Tracker (Vercel Style)
+// Đoạn JS này sẽ lắng nghe con trỏ và cập nhật toạ độ sáng
+document.addEventListener('mousemove', (e) => {
+  document.querySelectorAll('.chapter, .q-item').forEach((card) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
+  });
+});
+</script>
+</body>
+</html>
