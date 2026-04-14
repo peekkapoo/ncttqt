@@ -10,21 +10,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* Bảng màu Dark Techno / Webflow Developer */
-  --bg-body: #09090b;       /* Đen sâu */
-  --bg-card: #121214;       /* Xám đen cho thẻ */
+  /* Bảng màu Dark Techno / Webflow Developer (Mặc định) */
+  --bg-body: #09090b;       
+  --bg-card: #121214;       
   --bg-hover: #18181b;      
   --bg-highlight: #1e1e24;  
   
-  --text-main: #e4e4e7;     /* Trắng sáng */
-  --text-muted: #a1a1aa;    /* Xám thép */
-  --text-primary: #00e5ff;  /* Xanh Neon Cyan - Điểm nhấn techno */
+  --text-main: #e4e4e7;     
+  --text-muted: #a1a1aa;    
+  --text-primary: #00e5ff;  
   
   --border-light: #27272a;
   --border-focus: #00e5ff;
   
   --exam-bg: transparent;
-  --exam-text: #ff3366;     /* Đỏ dạ quang cho tag Thi */
+  --exam-text: #ff3366;     
+  
+  /* Biến màu động phục vụ đổi Theme */
+  --grid-color: rgba(255, 255, 255, 0.03);
+  --header-bg: rgba(18, 18, 20, 0.85);
+  --header-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  --shadow-accent: rgba(0, 229, 255, 0.15);
+  --shadow-accent-hover: rgba(0, 229, 255, 0.2);
+  --badge-shadow: rgba(255, 255, 255, 0.15);
+  --q-header-bg: rgba(255, 255, 255, 0.01);
+  --q-answer-bg: rgba(0, 0, 0, 0.2);
   
   /* Bắt buộc hình vuông (0px) theo yêu cầu */
   --radius-sm: 0px;
@@ -35,6 +45,31 @@
   --font-main: 'Inter', sans-serif;
   --font-heading: 'Space Grotesk', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Khai báo bảng màu Light Theme */
+[data-theme="light"] {
+  --bg-body: #f8f9fa;
+  --bg-card: #ffffff;
+  --bg-hover: #f1f5f9;
+  --bg-highlight: #f8fafc;
+  
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-primary: #0284c7; /* Xanh dương công nghệ dễ nhìn trên nền trắng */
+  
+  --border-light: #cbd5e1;
+  --border-focus: #0284c7;
+  --exam-text: #e11d48;
+  
+  --grid-color: rgba(0, 0, 0, 0.04);
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --header-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  --shadow-accent: rgba(2, 132, 199, 0.15);
+  --shadow-accent-hover: rgba(2, 132, 199, 0.2);
+  --badge-shadow: rgba(0, 0, 0, 0.1);
+  --q-header-bg: rgba(0, 0, 0, 0.02);
+  --q-answer-bg: rgba(241, 245, 249, 0.5);
 }
 
 * { 
@@ -49,11 +84,12 @@ body {
   color: var(--text-main);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
   
   /* Nền họa tiết lưới kỹ thuật số (Grid Pattern) */
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
@@ -65,24 +101,56 @@ body {
   z-index: 1;
 }
 
+/* Style cho nút đổi Theme */
+.theme-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  width: 42px;
+  height: 42px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 50;
+  transition: all 0.15s ease-out;
+}
+
+.theme-toggle:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  box-shadow: -3px 3px 0 var(--shadow-accent);
+  transform: translate(2px, -2px);
+}
+
+.theme-toggle svg { width: 20px; height: 20px; }
+.theme-toggle .sun { display: none; }
+.theme-toggle .moon { display: block; }
+[data-theme="light"] .theme-toggle .sun { display: block; }
+[data-theme="light"] .theme-toggle .moon { display: none; }
+
 /* Header Styles - Tech Terminal Vibe */
 .header { 
   margin-bottom: 3.5rem; 
   text-align: left;
-  background: rgba(18, 18, 20, 0.85);
+  background: var(--header-bg);
   backdrop-filter: blur(12px);
   padding: 2.5rem;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-light);
-  border-top: 4px solid var(--text-primary); /* Vạch kẻ trên cùng */
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  border-top: 4px solid var(--text-primary);
+  box-shadow: var(--header-shadow);
+  position: relative;
 }
 
 .header h1 { 
   font-family: var(--font-heading);
   font-size: 26px; 
   font-weight: 700; 
-  color: #ffffff; 
+  color: var(--text-main); 
   margin-bottom: 12px; 
   text-transform: uppercase;
   letter-spacing: -0.02em;
@@ -101,7 +169,6 @@ body {
   flex-wrap: wrap; 
 }
 
-/* Nút bấm (Buttons) vuông vức, viền sắc nét */
 .prog-pill { 
   font-family: var(--font-mono);
   font-size: 13px; 
@@ -114,15 +181,14 @@ body {
   border: 1px solid var(--text-muted); 
   color: var(--text-muted); 
   cursor: pointer; 
-  transition: all 0.15s ease-out; /* Chuyển động nhanh, dứt khoát */
+  transition: all 0.15s ease-out;
 }
 
 .prog-pill:hover { 
-  background: rgba(0, 229, 255, 0.05); 
+  background: var(--bg-hover); 
   border-color: var(--text-primary);
   color: var(--text-primary);
-  /* Hiệu ứng đổ bóng vuông (Brutalist tech shadow) */
-  box-shadow: -3px 3px 0 rgba(0, 229, 255, 0.2);
+  box-shadow: -3px 3px 0 var(--shadow-accent-hover);
   transform: translate(2px, -2px);
 }
 
@@ -131,49 +197,47 @@ body {
   box-shadow: none;
 }
 
-/* Chapter Card Styles - Hình vuông, đường viền nét */
+/* Chapter Card Styles */
 .chapter { 
   margin-bottom: 1.5rem; 
   background: var(--bg-card);
   border: 1px solid var(--border-light); 
   border-radius: var(--radius-lg); 
   transition: all 0.2s ease-out;
-  position: relative; /* Bắt buộc để chứa viền sáng */
+  position: relative;
 }
 
 /* Hiệu ứng Vercel Spotlight Border */
 .chapter::before {
   content: "";
   position: absolute;
-  inset: -1px; /* Phủ tràn ra mép viền cũ */
-  padding: 1px; /* Độ dày của viền sáng */
+  inset: -1px;
+  padding: 1px;
   border-radius: inherit;
-  /* Vùng sáng chạy theo tọa độ x, y của chuột */
   background: radial-gradient(
     800px circle at var(--mouse-x, 0) var(--mouse-y, 0),
     var(--text-primary),
     transparent 40%
   );
-  /* Kỹ thuật Mask đục thủng ruột thẻ, chỉ để lại border */
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  opacity: 0.15; /* Sáng mờ kể cả khi chưa hover (đúng chuẩn Vercel) */
+  opacity: 0.15;
   transition: opacity 0.4s ease;
   pointer-events: none;
   z-index: 10;
 }
 
 .chapter:hover {
-  border-color: transparent; /* Ẩn viền tĩnh đi để viền sáng thay thế */
-  box-shadow: -4px 4px 0 rgba(0, 229, 255, 0.15);
+  border-color: transparent;
+  box-shadow: -4px 4px 0 var(--shadow-accent);
   transform: translate(2px, -2px);
 }
 
 .chapter:hover::before {
-  opacity: 1; /* Sáng rực rỡ khi di chuột vào chính nó */
+  opacity: 1;
 }
 
 .chapter-header { 
@@ -200,15 +264,14 @@ body {
   white-space: nowrap; 
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  /* Đổ bóng khối cho badge để hòa hợp với tông màu data */
-  box-shadow: -2px 2px 0 rgba(255, 255, 255, 0.15);
+  box-shadow: -2px 2px 0 var(--badge-shadow);
 }
 
 .ch-title { 
   font-family: var(--font-heading);
   font-size: 18px; 
   font-weight: 700; 
-  color: #ffffff; 
+  color: var(--text-main); 
   flex: 1; 
   letter-spacing: 0.01em;
 }
@@ -224,7 +287,6 @@ body {
   height: 28px;
   background: transparent;
   border: 1px solid var(--border-light);
-  border-radius: 0;
 }
 
 .ch-arrow.open { 
@@ -233,7 +295,6 @@ body {
   color: var(--text-primary);
 }
 
-/* Chapter Body & Keys */
 .chapter-body { 
   display: none; 
   padding: 0 24px 24px 24px; 
@@ -262,7 +323,6 @@ body {
   content: "";
   flex: 1;
   height: 2px;
-  /* Đường đứt nét kỹ thuật số */
   background: repeating-linear-gradient(90deg, var(--border-light), var(--border-light) 4px, transparent 4px, transparent 8px);
   margin-left: 16px;
 }
@@ -273,7 +333,7 @@ body {
 
 .key-content { 
   background: var(--bg-highlight); 
-  border-left: 3px solid var(--text-primary); /* Sọc dọc techno */
+  border-left: 3px solid var(--text-primary);
   border-radius: var(--radius-sm); 
   padding: 18px 24px; 
   margin-bottom: 24px; 
@@ -281,16 +341,10 @@ body {
   color: var(--text-main); 
 }
 
-.key-content ul { 
-  padding-left: 20px; 
-}
-
-.key-content li { 
-  margin-bottom: 8px; 
-}
+.key-content ul { padding-left: 20px; }
+.key-content li { margin-bottom: 8px; }
 .key-content li:last-child { margin-bottom: 0; }
 
-/* Questions Styles */
 .q-item { 
   border: 1px solid var(--border-light); 
   border-radius: var(--radius-sm); 
@@ -300,7 +354,6 @@ body {
   position: relative;
 }
 
-/* Vercel Spotlight Border Effect cho các item câu hỏi */
 .q-item::before {
   content: "";
   position: absolute;
@@ -317,7 +370,7 @@ body {
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  opacity: 0; /* Mặc định ẩn để không bị quá chói, chỉ bật khi hover */
+  opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
   z-index: 10;
@@ -326,20 +379,17 @@ body {
 .q-item:hover {
   border-color: transparent;
   transform: translateX(4px);
-  /* Thanh trượt dạ quang bên trái khi hover */
   box-shadow: -4px 0 0 var(--text-primary);
 }
 
-.q-item:hover::before {
-  opacity: 1;
-}
+.q-item:hover::before { opacity: 1; }
 
 .q-header { 
   padding: 16px 20px; 
   display: flex; 
   gap: 14px; 
   cursor: pointer; 
-  background: rgba(255, 255, 255, 0.01); 
+  background: var(--q-header-bg); 
   align-items: flex-start;
 }
 
@@ -355,7 +405,7 @@ body {
 .q-text { 
   font-size: 15px; 
   font-weight: 500;
-  color: #ffffff; 
+  color: var(--text-main); 
   flex: 1; 
   line-height: 1.6;
 }
@@ -376,36 +426,22 @@ body {
   display: none; 
   padding: 20px 20px 24px 58px; 
   border-top: 1px solid var(--border-light); 
-  background: rgba(0, 0, 0, 0.2); 
+  background: var(--q-answer-bg); 
   font-size: 14.5px; 
-  color: #d4d4d8; 
+  color: var(--text-main); 
 }
 
-.q-answer.open { 
-  display: block; 
-}
-
-.q-answer strong { 
-  color: #ffffff; 
-  font-weight: 600; 
-}
-
-.q-answer ul, .q-answer ol { 
-  padding-left: 22px; 
-  margin: 10px 0 14px 0; 
-}
-
-.q-answer li { 
-  margin-bottom: 8px; 
-}
+.q-answer.open { display: block; }
+.q-answer strong { color: var(--text-main); font-weight: 700; }
+.q-answer ul, .q-answer ol { padding-left: 22px; margin: 10px 0 14px 0; }
+.q-answer li { margin-bottom: 8px; }
 
 .q-answer table td {
   padding: 12px;
-  border-color: var(--border-light) !important; /* Đè màu viền bảng trong Dark Mode */
-  color: #e4e4e7;
+  border-color: var(--border-light) !important;
+  color: var(--text-main) !important;
 }
 
-/* Tags thi cử */
 .exam-tag { 
   display: inline-flex; 
   align-items: center;
@@ -421,18 +457,17 @@ body {
   letter-spacing: 0.5px;
   text-transform: uppercase;
   vertical-align: middle;
-  /* Đổ bóng offset vuông vắn */
   box-shadow: -2px 2px 0 var(--exam-text);
 }
 
-/* Responsive adjustments */
 @media (max-width: 600px) {
   .container { padding: 1.5rem 1rem; }
-  .header { padding: 2rem 1.5rem; margin-bottom: 2rem; }
+  .header { padding: 2.5rem 1.5rem 2rem 1.5rem; margin-bottom: 2rem; }
   .chapter-header { padding: 16px; gap: 12px; }
   .q-answer { padding-left: 20px; }
   .q-item:hover { transform: translateX(2px); box-shadow: -2px 0 0 var(--text-primary); }
   .chapter:hover { transform: translate(1px, -1px); }
+  .theme-toggle { top: 1rem; right: 1rem; width: 36px; height: 36px; }
 }
 
 /* Scroll Reveal Animation */
@@ -449,7 +484,25 @@ body {
 </style>
 </head>
 <body>
+<!-- Script ngăn chặn nháy màn hình (FOUC) khi tải trang -->
+<script>
+  const savedTheme = localStorage.getItem('techno-theme');
+  if (savedTheme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+</script>
+
 <div class="container">
+  <!-- Nút đổi Theme -->
+  <button id="theme-toggle" class="theme-toggle" aria-label="Đổi chế độ màu">
+    <!-- Icon Mặt trời (Cho Dark Mode) -->
+    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    <!-- Icon Mặt trăng (Cho Light Mode) -->
+    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+  </button>
+
 <div class="header reveal">
   <h1>Đề cương ôn tập — NCTTQT</h1>
   <p>Bấm vào câu hỏi để xem gợi ý trả lời. Câu có nhãn <span class="exam-tag" style="margin:0; box-shadow:none;">Thi</span> xuất hiện trong đề cũ.</p>
@@ -499,7 +552,7 @@ const data = [
       a: `<strong>7 bước quy trình:</strong><ol>
       <li><strong>Xác định vấn đề & mục tiêu nghiên cứu</strong> — bước quan trọng nhất</li>
       <li><strong>Lập kế hoạch nghiên cứu</strong> — nguồn dữ liệu, phương pháp, kế hoạch chọn mẫu</li>
-      <li><strong>Xác định thông tin cần thiết</strong> — cụ thể hóa nhu cầu dữ liệu</li>
+      <li><strong>Xác định thông tương cần thiết</strong> — cụ thể hóa nhu cầu dữ liệu</li>
       <li><strong>Lựa chọn nguồn dữ liệu</strong> — sơ cấp hoặc thứ cấp</li>
       <li><strong>Thu thập dữ liệu</strong> — giai đoạn tốn nhiều thời gian & chi phí nhất</li>
       <li><strong>Xử lý & phân tích thông tin</strong> — dùng phần mềm thống kê</li>
@@ -538,7 +591,7 @@ const data = [
       exam: true,
       a: `<div style="overflow-x:auto;">
       <table style="width:100%;font-size:14px;border-collapse:collapse;min-width:500px;">
-      <tr style="background:var(--bg-highlight)"><td style="padding:10px;border:1px solid var(--border-light);font-weight:600;color:#fff">Tiêu chí</td><td style="padding:10px;border:1px solid var(--border-light);font-weight:600;color:#fff">Mô tả</td><td style="padding:10px;border:1px solid var(--border-light);font-weight:600;color:#fff">Nhân quả</td></tr>
+      <tr style="background:var(--bg-highlight)"><td style="padding:10px;border:1px solid var(--border-light);font-weight:600;color:var(--text-main)">Tiêu chí</td><td style="padding:10px;border:1px solid var(--border-light);font-weight:600;color:var(--text-main)">Mô tả</td><td style="padding:10px;border:1px solid var(--border-light);font-weight:600;color:var(--text-main)">Nhân quả</td></tr>
       <tr><td style="padding:10px;border:1px solid var(--border-light);font-weight:500;">Mục tiêu</td><td style="padding:10px;border:1px solid var(--border-light);">Xác định độ lớn của chỉ tiêu (ai, cái gì, bao nhiêu)</td><td style="padding:10px;border:1px solid var(--border-light);">Kiểm tra mối quan hệ nguyên nhân-kết quả</td></tr>
       <tr><td style="padding:10px;border:1px solid var(--border-light);font-weight:500;">Phương pháp</td><td style="padding:10px;border:1px solid var(--border-light);">Điều tra, khảo sát, quan sát</td><td style="padding:10px;border:1px solid var(--border-light);">Thực nghiệm (experiment)</td></tr>
       <tr><td style="padding:10px;border:1px solid var(--border-light);font-weight:500;">Dữ liệu</td><td style="padding:10px;border:1px solid var(--border-light);">Sơ cấp & thứ cấp</td><td style="padding:10px;border:1px solid var(--border-light);">Chủ yếu sơ cấp, kiểm soát biến</td></tr>
@@ -790,7 +843,6 @@ function render() {
 
     const header = document.createElement('div');
     header.className = 'chapter-header';
-    // Đã thay đổi icon mũi tên thành dạng hình vuông (square stroke) cho phù hợp style Techno
     header.innerHTML = `
       <span class="ch-badge" style="background:${chap.color};color:${chap.textColor}">Chương ${chap.ch}</span>
       <span class="ch-title">${chap.title}</span>
@@ -875,6 +927,19 @@ document.addEventListener('mousemove', (e) => {
     card.style.setProperty('--mouse-y', `${y}px`);
   });
 });
+
+// Xử lý đổi theme (Light / Dark mode)
+const themeToggleBtn = document.getElementById('theme-toggle');
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener('click', () => {
+    const root = document.documentElement;
+    const currentTheme = root.getAttribute('data-theme') || 'dark';
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    root.setAttribute('data-theme', newTheme);
+    localStorage.setItem('techno-theme', newTheme);
+  });
+}
 </script>
 </body>
 </html>
